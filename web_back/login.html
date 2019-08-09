@@ -35,6 +35,21 @@
     </div>
     <!-- bootstarp的弹出框 -->
     <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">注意</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -48,3 +63,32 @@
 <script src="./js/jquery-1.12.4.min.js"></script>
 <!-- 导入bs的js -->
 <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $('.input_sub').on('click', function(e) {
+        e.preventDefault();
+        if ($('.input_txt').val() === '' || $('.input_pass').val() === '') {
+            $('.modal-body').text('请填写完整用户名称及密码')
+            $('#myModal').modal();
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: 'http://localhost:8000/admin/login',
+            data: {
+                user_name: $('.input_txt').val(),
+                password: $('.input_pass').val()
+            },
+            success: function(res) {
+                // console.log(res)
+                if (res.code === 200) {
+                    location.href = 'index.html';
+                } else if (res.code === 400) {
+                    $('.modal-body').text(res.msg)
+                    $('#myModal').modal();
+                    $('.input_txt').val('');
+                    $('.input_pass').val('')
+                }
+            }
+        })
+    })
+</script>
