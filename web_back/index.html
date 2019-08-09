@@ -78,7 +78,7 @@
           >个人中心</a
         >
         <img src="images/2.jpg" alt="person" />
-        <a href="javascript:;"><i class="iconfont icon-tuichu"></i> 退出</a>
+        <a href="javascript:"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
@@ -188,22 +188,35 @@
     </script>
 
 
-    <!-- 自己的逻辑 -->
+    <!-- 自己的逻辑 退出登录 -->
     <script>
-        $('.user_center_link>a').eq(1).on('click', function(e) {
+        $('.user_center_link>a').eq(1).on('click', function() {
             $('#myModal').modal();
             $('.btn-leave').on('click', function() {
                 $.post({
-                    url: 'https://autumnfish.cn/big/admin/logout',
-                    success: function(res) {
+                    url: 'http://localhost:8000/admin/logout',
+                    success: function() {
                         location.href = 'login.html'
                     }
                 })
+
             })
 
         })
     </script>
-
+    <!-- 获取用户资料 -->
+    <script>
+        $.get({
+            url: ' https://autumnfish.cn/big/admin/getuser',
+            success: function(res) {
+                console.log(res)
+                if (res.code === 200) {
+                    $('.user_info img,user_center_link img').prop('src', res.data.user_pic)
+                    $('.user_info i').text(res.data.nickname)
+                }
+            }
+        })
+    </script>
 
 </body>
 
